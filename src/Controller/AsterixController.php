@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Pelicula;
 use App\Entity\Personaje;
+use App\Form\PersonajeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -56,6 +58,22 @@ class AsterixController extends AbstractController {
         // return $this->render('Asterix/personaje.html.twig',['personaje'=>$personaje]);
 
         return new Response('Astérix creado');
+    }
+
+    #[Route('/insertPersonaje', name:'insertPersonaje')]
+    public function insertPersonaje(EntityManagerInterface $doctrine, Request $request){
+        
+        $form = $this-> createForm(PersonajeType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() and $form->isValid()){
+            $personaje = $form->getData();
+            $doctrine->persist($personaje);
+            $doctrine->flush();
+            return $this->redirectToRoute('personajes');
+        }
+     
+        return $this->renderForm('Asterix/insertPersonaje.html.twig', ['personajeForm'=>$form]);
     }
 
 
