@@ -15,33 +15,14 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-link active" href="#">Inicio <span class="sr-only">(current)</span></a>
-                        <a class="nav-link" href="#">Listar Personajes</a>
+                        <a class="nav-link active" href="{{ path("personajes") }}">Inicio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href=" {{ path("personajes") }} ">Listar Personajes</a>
                         <a class="nav-link" href="#">Crear Personaje</a>
                     </div>
                 </div>
             </nav>
-            <div class="container">
-                <div class="row">
-                    <div class="col text-center"><h2>{{personaje.name}}</h2></div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <img src="{{personaje.image}}">
-                    </div>
-                    <div class="col">
-                        <div class="row">
-                            <div class="col">{{personaje.role}}</div>
-                        </div>
-                        <div class="row">
-                            <ul>
-                               {# DEBILIDADES #}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% block js %} {% endblock %}
+            {% block contenido %}{% endblock %}
+            
         </div>
     </body>
 </html>
