@@ -3,7 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Pelicula;
+use App\Entity\Personaje;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,10 +15,20 @@ class PeliculaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
+            ->add('title', null, [
+                'label'=> 'Título'
+            ])
             ->add('Poster')
-            ->add('trailer')
-            // ->add('personajes')
+            ->add('trailer', null, [
+                'label'=> 'Trailer'
+            ])
+            // ->add('personajes', EntityType::class, [
+            //     'class'=> Personaje::class,
+            //     'choice_label'=> 'name',
+            //     'multiple'=> true,
+            //     'expanded'=> true
+            // ])
+            ->add('Insertar', SubmitType::class)
         ;
     }
 

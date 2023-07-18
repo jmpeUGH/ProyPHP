@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Pelicula;
 use App\Entity\Personaje;
+use App\Form\PeliculaType;
 use App\Form\PersonajeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,8 +52,6 @@ class AsterixController extends AbstractController {
         $pelicula->setTitle('Astérix y Obélix contra César');
         $doctrine->persist($pelicula);
 
-
-
         // $doctrine->flush();
         
         // return $this->render('Asterix/personaje.html.twig',['personaje'=>$personaje]);
@@ -76,6 +75,83 @@ class AsterixController extends AbstractController {
         return $this->renderForm('Asterix/insertPersonaje.html.twig', ['personajeForm'=>$form]);
     }
 
+    #[Route('/editPersonaje/{id}', name:'editPersonaje')]
+    public function editPersonaje(EntityManagerInterface $doctrine, Request $request, $id){
+        
+        $repository=$doctrine->getRepository(Personaje::class);
+        $personaje = $repository->find($id);
+        
+        
+        $form = $this-> createForm(PersonajeType::class, $personaje);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() and $form->isValid()){
+            $personaje = $form->getData();
+            $doctrine->persist($personaje);
+            $doctrine->flush();
+            return $this->redirectToRoute('personajes');
+        }
+     
+        return $this->renderForm('Asterix/insertPersonaje.html.twig', ['personajeForm'=>$form]);
+    }
+
+
+    #[Route('/pelicula/{id}', name:'pelicula')]
+    public function getPelicula(EntityManagerInterface $doctrine, $id){
+        
+        $repository = $doctrine->getRepository(Pelicula::class);
+
+        $pelicula = $repository->find($id);
+        
+        return $this->render('Asterix/pelicula.html.twig',['pelicula'=>$pelicula]);
+    }
+
+    #[Route('/listPeliculas', name:'peliculas')]
+    public function getPeliculas(EntityManagerInterface $doctrine){
+        
+        
+        $repository = $doctrine->getRepository(Pelicula::class);
+        
+        $peliculas = $repository->findAll();
+        
+        return $this->render('Asterix/listPeliculas.html.twig',['peliculas'=>$peliculas]);
+    }
+
+    #[Route('/insertPelicula', name:'insertPelicula')]
+    public function insertPelicula(EntityManagerInterface $doctrine, Request $request){
+        
+        $form = $this-> createForm(PeliculaType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() and $form->isValid()){
+            $pelicula = $form->getData();
+            $doctrine->persist($pelicula);
+            $doctrine->flush();
+            return $this->redirectToRoute('peliculas');
+        }
+     
+        return $this->renderForm('Asterix/insertPelicula.html.twig', ['peliculaForm'=>$form]);
+    }
+
+    #[Route('/editPelicula/{id}', name:'editPelicula')]
+    public function editPelicula(EntityManagerInterface $doctrine, Request $request, $id){
+        
+        $repository=$doctrine->getRepository(Pelicula::class);
+        $pelicula = $repository->find($id);
+
+
+        $form = $this-> createForm(PeliculaType::class, $pelicula);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() and $form->isValid()){
+            $pelicula = $form->getData();
+            $doctrine->persist($pelicula);
+            $doctrine->flush();
+            return $this->redirectToRoute('peliculas');
+        }
+     
+        return $this->renderForm('Asterix/insertPelicula.html.twig', ['peliculaForm'=>$form]);
+    }
 
     #[Route('/')]
     public function home(){
