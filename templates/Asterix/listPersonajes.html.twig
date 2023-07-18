@@ -12,10 +12,10 @@
                             <h4 class="card-title">{{ personaje.name }}</h4>
                             <h6 class="card-text">{{ personaje.role }}</h6>
                             <a href="{{ path('personaje', {'id': personaje.id}) }}" class="btn btn-primary">Más Info</a>
-                            {# {% if is_granted("ROLE_ADMIN")%} #}
+                            {% if is_granted("ROLE_ADMIN")%}
                             <a href="{{ path('editPersonaje', {'id': personaje.id}) }}" class="btn 
                             btn-primary">Editar</a>
-                            {# {% endif %} #}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
